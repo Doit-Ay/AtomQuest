@@ -8,7 +8,7 @@ AtmoQuest is an enterprise-grade, goal-setting and performance-tracking platform
 
 ## 🚀 Live Demo
 
-**URL:** *Deployment link here*
+**URL:** [https://atom-quest-dun.vercel.app](https://atom-quest-dun.vercel.app)
 
 ### Quick Login Credentials (password: `password123`)
 
@@ -18,73 +18,115 @@ AtmoQuest is an enterprise-grade, goal-setting and performance-tracking platform
 | Manager  | Rajesh Kumar  | manager@atmoquest.dev        |
 | Admin    | Priya Sharma  | admin@atmoquest.dev          |
 
+### Microsoft SSO
+Click **"Sign in with Microsoft"** to login via Azure AD — auto-provisions new users with org hierarchy sync.
+
 ---
 
-## ✨ Key Features
+## ✨ Core Features (Phase 1 & 2)
 
 ### 🔐 Role-Based Access Control
 - **Employee**: Create goals, submit sheets, log quarterly achievements
 - **Manager**: Approve/return goal sheets, manage team, push shared goals
 - **Admin**: Full system control — user management, cycle admin, audit trails
 
-### 📊 Advanced Analytics Dashboard
+### 📋 Goal Creation & Approval (Phase 1)
+- Select Thrust Area, define Goal Title/Description
+- Assign Unit of Measurement: Numeric, %, Timeline, or Zero-based
+- Set Targets and Weightage per goal
+- System-enforced validation: total=100%, min=10%, max 8 goals
+- Manager (L1) approval with inline edit, approve, or return for rework
+- Goals locked on approval — no edits without Admin intervention
+
+### 📊 Achievement Tracking & Check-ins (Phase 2)
+- Quarterly update interface for Actual vs. Planned achievements
+- Status selection: Not Started / On Track / Completed
+- Manager check-in module with structured comments
+- System-computed progress scores per goal
+
+### 🔗 Shared Goals
+- Admin/Manager can push templated goals to multiple employees
+- Multi-recipient selection with "Select All"
+- Auto-creates goal sheets for recipients without one
+- Recipients receive email + Teams notifications
+- Goal Title and Target read-only; weightage adjustable
+
+---
+
+## 🏆 Bonus Features (All Implemented)
+
+### 5.1 Microsoft Entra ID (Azure AD) Integration ✅
+- **Single Sign-On (SSO)** via Microsoft Entra ID provider
+- **Automatic org hierarchy sync** — manager reporting lines derived from Microsoft Graph API (`/me/manager`)
+- **Role assignment from Azure AD groups** — configurable group-to-role mapping (Admin/Manager/Employee)
+- Auto-provisioning of new users on first SSO login
+- Profile sync on every login (department, manager, role updates)
+
+### 5.2 Email & Microsoft Teams Integration ✅
+- **Automated email notifications** for: goal submission, approval, rejection, check-in reminders, shared goal assignments
+- **Teams Adaptive Card notifications** via Incoming Webhook for all lifecycle events
+- **Deep-link support** — every Teams card includes a direct link to the relevant goal sheet/page
+- Dark-themed HTML email templates matching the portal design
+
+### 5.3 Escalation Module (Rule-Based) ✅
+- Configurable escalation rules triggered by defined conditions:
+  - Employee has not submitted goals within 14 days of cycle open
+  - Manager has not approved goals within 7 days of submission
+  - Quarterly check-in not completed within 21 days of window
+- Severity classification: High / Medium / Low
+- Escalation log visible to Admin/HR for tracking and resolution
+
+### 5.4 Analytics Module ✅
 - **QoQ Performance Trend** — Area chart tracking weighted scores across quarters
 - **Goal Status Distribution** — Interactive donut chart
 - **Thrust Area Breakdown** — Horizontal bar chart by organizational focus
 - **Employee Comparison** — Gradient bar chart for team benchmarking
 - **Organizational Alignment Sunburst** — D3.js radial hierarchy: Org → Department → Employee → Goals
 
-### 🔗 Shared Goals
-Managers/Admins can "push" templated goals to multiple employees simultaneously:
-- Multi-recipient selection with "Select All"
-- Auto-creates goal sheets for recipients without one
-- Recipients receive automated email notifications
+---
 
-### 📧 Email Notification System
-Integrated with **Resend API** for automated dark-themed notifications:
-- Goal sheet submitted (→ Manager)
-- Goal sheet approved/returned (→ Employee)
-- Check-in reminders
-- Shared goal assignments
+## 📈 Reporting & Governance
 
-### ⚡ Escalation Engine
-Rule-based compliance monitoring with auto-detection:
-- Overdue goal sheet submissions (14+ days)
-- Pending approval delays (7+ days)
-- Missing quarterly check-ins (21+ days)
-- Severity classification (High/Medium/Low)
-
-### 📈 Reports & Export
-- **Achievement Reports** with quarterly score breakdown
-- **Completion Dashboard** tracking check-in compliance
-- **Excel Export** — Multi-sheet .xlsx with Goals, Summary, and Check-in data
-- **CSV Export** — Flat file for spreadsheet tools
-
-### 🔍 Full Audit Trail
-Every action logged with:
-- User, timestamp, action type
-- JSON diff viewer (previous → new values)
-- Filterable by entity type and user
+- **Achievement Report**: Exportable (CSV / Excel) showing Planned vs. Actual for all employees
+- **Completion Dashboard**: Real-time view of check-in completion status
+- **Audit Trail**: Every change logged with user, timestamp, action type, and JSON diff viewer
+- **Multi-sheet Excel Export**: Goals, Summary, and Check-in data in `.xlsx` format
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Next.js 16 (App Router)                │
-├──────────┬──────────┬──────────┬──────────┬─────────┬──────────┤
-│  Login   │Dashboard │  Goals   │ Approvals│ Reports │  Admin   │
-│  Page    │  (RSC)   │  (RSC)   │  (RSC)   │  (RSC)  │  (RSC)   │
-├──────────┴──────────┴──────────┴──────────┴─────────┴──────────┤
-│           Server Actions (goals.ts, admin.ts, etc.)            │
-├────────────────────────────────────────────────────────────────┤
-│           Prisma v7 ORM + SQLite (dev) / PostgreSQL (prod)     │
-├────────────────────────────────────────────────────────────────┤
-│           NextAuth v5 (Credentials Provider + JWT)              │
-├────────────────────────────────────────────────────────────────┤
-│  Resend Email  │  D3.js Sunburst  │  Recharts  │  xlsx Export  │
-└────────────────┴──────────────────┴────────────┴───────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│                      Next.js 16 (App Router + RSC)                      │
+├───────────┬───────────┬───────────┬───────────┬──────────┬──────────────┤
+│   Login   │ Dashboard │   Goals   │ Approvals │ Reports  │    Admin     │
+│   (SSO)   │   (RSC)   │   (RSC)   │   (RSC)   │  (RSC)   │   (RSC)     │
+├───────────┴───────────┴───────────┴───────────┴──────────┴──────────────┤
+│              Server Actions (goals.ts, admin.ts, etc.)                   │
+├──────────────────────────────────────────────────────────────────────────┤
+│           Prisma v7 ORM + PostgreSQL (Supabase)                          │
+├──────────────────────────────────────────────────────────────────────────┤
+│   NextAuth v5 (Credentials + Microsoft Entra ID SSO) + JWT Sessions      │
+├──────────────────────────────────────────────────────────────────────────┤
+│ Microsoft  │ Microsoft │  Resend  │ D3.js    │ Recharts │ xlsx Export   │
+│ Graph API  │ Teams     │  Email   │ Sunburst │ Charts   │ CSV/Excel    │
+└────────────┴───────────┴──────────┴──────────┴──────────┴──────────────┘
+```
+
+### Authentication Flow
+```
+User → Login Page
+  ├── Credentials (email/password) → JWT → Dashboard
+  └── Microsoft SSO → Azure AD → Graph API (org sync) → JWT → Dashboard
+```
+
+### Notification Flow
+```
+Goal Event (submit/approve/return)
+  ├── Email (Resend API) → Employee/Manager inbox
+  └── Teams (Webhook) → Adaptive Card → Channel notification
+                              └── Deep-link → AtmoQuest page
 ```
 
 ---
@@ -93,7 +135,7 @@ Every action logged with:
 
 | Route                      | Access     | Description                              |
 |----------------------------|------------|------------------------------------------|
-| `/login`                   | Public     | Quick login + email/password auth        |
+| `/login`                   | Public     | SSO + Quick login + email/password auth  |
 | `/dashboard`               | All roles  | Role-aware dashboard with metrics        |
 | `/dashboard/goals`         | All        | Goal creation, editing, submission       |
 | `/dashboard/approvals`     | Mgr/Admin  | Review and approve/return goal sheets   |
@@ -117,12 +159,16 @@ Every action logged with:
 | Framework        | Next.js 16 (App Router, Server Components)  |
 | Language         | TypeScript 5                                |
 | Styling          | Vanilla CSS (Obsidian dark theme, 1000+ LOC)|
-| ORM              | Prisma v7 (SQLite + better-sqlite3)         |
-| Auth             | NextAuth v5 (JWT + Credentials)             |
+| Database         | PostgreSQL (Supabase) via Prisma v7         |
+| Auth             | NextAuth v5 (JWT + Credentials + Azure AD)  |
+| SSO              | Microsoft Entra ID (OpenID Connect)         |
+| Org Sync         | Microsoft Graph API                         |
 | Charts           | Recharts + D3.js (Sunburst)                 |
 | Animations       | Framer Motion                               |
 | Email            | Resend API                                  |
+| Teams            | Incoming Webhook (Adaptive Cards)           |
 | Export           | xlsx (SheetJS)                              |
+| Hosting          | Vercel (Serverless)                         |
 
 ---
 
@@ -136,15 +182,15 @@ Every action logged with:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/atmoquest.git
-cd atmoquest
+git clone https://github.com/Doit-Ay/AtomQuest.git
+cd AtomQuest
 
 # Install dependencies
 npm install
 
 # Set up environment
-cp .env.example .env.local
-# Edit .env.local with your values
+cp .env.example .env
+# Edit .env with your values
 
 # Initialize database
 npx prisma db push
@@ -157,10 +203,26 @@ npm run dev
 ### Environment Variables
 
 ```env
-DATABASE_URL="file:./dev.db"
+# Database (Supabase PostgreSQL)
+DATABASE_URL="postgresql://..."          # Pooler connection (port 6543)
+DIRECT_URL="postgresql://..."            # Direct connection (port 5432)
+
+# Auth
 AUTH_SECRET="your-secret-key"
-RESEND_API_KEY="re_xxxxxxxx"          # Optional: for email notifications
-RESEND_FROM_EMAIL="noreply@yourdomain.com"
+NEXTAUTH_URL="http://localhost:3000"
+
+# Microsoft Entra ID (Optional)
+AZURE_AD_CLIENT_ID=""
+AZURE_AD_CLIENT_SECRET=""
+AZURE_AD_TENANT_ID="common"
+AZURE_AD_ADMIN_GROUPS="atmoquest-admin"  # Azure AD groups → Admin role
+AZURE_AD_MANAGER_GROUPS="atmoquest-manager"  # Azure AD groups → Manager role
+
+# Microsoft Teams (Optional)
+TEAMS_WEBHOOK_URL=""                     # Incoming Webhook URL
+
+# Email (Optional - uses console logging if not set)
+RESEND_API_KEY=""
 ```
 
 ---
@@ -182,12 +244,16 @@ src/
 ├── actions/          # Server Actions (goals, admin, escalations, shared-goals)
 ├── app/
 │   ├── dashboard/    # 12 dashboard sub-routes
-│   ├── login/        # Auth page
+│   ├── login/        # Auth page (SSO + Credentials)
 │   └── api/          # API routes (auth, export)
 ├── components/
 │   ├── layout/       # Sidebar, Topbar
 │   └── shared/       # Skeleton, ErrorBoundary
-├── lib/              # Auth config, Prisma client, email, utilities
+├── lib/
+│   ├── auth.ts       # NextAuth config (Credentials + Azure AD + Graph API)
+│   ├── prisma.ts     # Prisma client singleton (PrismaPg adapter)
+│   ├── email.ts      # Resend email templates
+│   └── teams.ts      # Teams Adaptive Card notifications
 └── types/            # TypeScript declarations
 ```
 
@@ -207,4 +273,4 @@ This project was built for the **AtomQuest Hackathon 1.0** on Unstop.
 
 ---
 
-*Built with ❤️ using Next.js 16, Prisma v7, and D3.js*
+*Built with ❤️ using Next.js 16, Prisma v7, Microsoft Entra ID, and D3.js*

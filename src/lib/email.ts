@@ -91,7 +91,7 @@ export async function sendGoalSubmittedEmail(data: {
       <tr><td style="color: #5C6178;">Total Weightage</td><td>${data.totalWeightage}%</td></tr>
     </table>
     <p>Please review and approve or return the goal sheet.</p>
-    <a href="${process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/approvals" class="btn">Review Now →</a>
+    <a href="${process.env.AUTH_URL || process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/approvals" class="btn">Review Now →</a>
   `;
   return sendEmail({
     to: data.managerEmail,
@@ -111,7 +111,7 @@ export async function sendGoalApprovedEmail(data: {
     <p>Great news! <strong>${data.managerName}</strong> has approved your goal sheet.</p>
     <p>Your goals are now locked and active. You can begin tracking achievements in the Check-ins section.</p>
     <p><span class="badge badge-teal">APPROVED</span></p>
-    <a href="${process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/goals" class="btn">View Goals →</a>
+    <a href="${process.env.AUTH_URL || process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/goals" class="btn">View Goals →</a>
   `;
   return sendEmail({
     to: data.employeeEmail,
@@ -136,7 +136,7 @@ export async function sendGoalReturnedEmail(data: {
       <div style="font-size: 14px; color: #F0F2F5;">${data.returnNote}</div>
     </div>
     <p>Please update your goals and resubmit.</p>
-    <a href="${process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/goals" class="btn">Edit Goals →</a>
+    <a href="${process.env.AUTH_URL || process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/goals" class="btn">Edit Goals →</a>
   `;
   return sendEmail({
     to: data.employeeEmail,
@@ -157,7 +157,7 @@ export async function sendCheckInReminderEmail(data: {
     <p>It's time for your <strong>${data.quarter}</strong> quarterly check-in for <strong>${data.cycleName}</strong>.</p>
     <p>Please update your achievement progress before the window closes.</p>
     <p><span class="badge badge-violet">${data.quarter} CHECK-IN</span></p>
-    <a href="${process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/checkins" class="btn">Update Progress →</a>
+    <a href="${process.env.AUTH_URL || process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/checkins" class="btn">Update Progress →</a>
   `;
   return sendEmail({
     to: data.employeeEmail,
@@ -183,7 +183,7 @@ export async function sendSharedGoalEmail(data: {
     </div>
     <p>The goal has been added to your goal sheet. You can adjust the weightage but not the title or target.</p>
     <p><span class="badge badge-amber">SHARED GOAL</span></p>
-    <a href="${process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/goals" class="btn">View Goal →</a>
+    <a href="${process.env.AUTH_URL || process.env.NEXTAUTH_URL || "http://localhost:3000"}/dashboard/goals" class="btn">View Goal →</a>
   `;
   return sendEmail({
     to: data.employeeEmail,
