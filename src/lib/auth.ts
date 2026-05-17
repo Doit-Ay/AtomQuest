@@ -13,28 +13,41 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        try {
+          if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
+          console.log("[auth] Attempting login for:", credentials.email);
+          console.log("[auth] DIRECT_URL set:", !!process.env.DIRECT_URL);
+          console.log("[auth] DATABASE_URL set:", !!process.env.DATABASE_URL);
 
-        if (!user) return null;
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email as string },
+          });
 
-        const isValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
+          console.log("[auth] User found:", !!user);
 
-        if (!isValid) return null;
+          if (!user) return null;
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          department: user.department,
-        };
+          const isValid = await bcrypt.compare(
+            credentials.password as string,
+            user.password
+          );
+
+          console.log("[auth] Password valid:", isValid);
+
+          if (!isValid) return null;
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            department: user.department,
+          };
+        } catch (error) {
+          console.error("[auth] Login error:", error);
+          return null;
+        }
       },
     }),
   ],
