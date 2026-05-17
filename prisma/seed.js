@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const { PrismaPg } = require("@prisma/adapter-pg");
 const bcrypt = require("bcryptjs");
 
-const adapter = new PrismaPg(process.env.DATABASE_URL);
+const adapter = new PrismaPg(process.env.DIRECT_URL || process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
