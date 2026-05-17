@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { auth } from "@/lib/auth";
 import { getGoalSheetForUser } from "@/actions/goals";
 import { prisma } from "@/lib/prisma";

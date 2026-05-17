@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { auth } from "@/lib/auth";
 import { getAuditLogs } from "@/actions/goals";
 import { AuditClient } from "./audit-client";

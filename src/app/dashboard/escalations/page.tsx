@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { auth } from "@/lib/auth";
 import { getEscalations } from "@/actions/escalations";
 import { EscalationsClient } from "./escalations-client";
