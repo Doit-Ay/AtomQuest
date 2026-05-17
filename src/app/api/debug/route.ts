@@ -15,7 +15,7 @@ export async function GET() {
   };
 
   try {
-    const connStr = process.env.DIRECT_URL || process.env.DATABASE_URL;
+    const connStr = process.env.DATABASE_URL || process.env.DIRECT_URL;
     if (!connStr) {
       info.error = "No connection string found";
       return NextResponse.json(info);
