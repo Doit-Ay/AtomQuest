@@ -83,9 +83,9 @@ export default function LoginPage() {
                   <motion.button key={a.role} className="role" onClick={() => quickLogin(a)} disabled={loading}
                     whileHover={{ scale: 1.02, x: 4 }} whileTap={{ scale: 0.98 }}
                     initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.07 }}
-                    style={{ "--c": a.color } as React.CSSProperties}>
-                    <div className="role-pip" />
-                    <div className="role-info">
+                    style={{ "--c": a.color, display: "flex", flexDirection: "row", alignItems: "center" } as React.CSSProperties}>
+                    <div className="role-pip" style={{ width: 4, minHeight: 36, alignSelf: "stretch", borderRadius: 4, background: a.color, opacity: 0.6, flexShrink: 0 }} />
+                    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3, marginLeft: 14 }}>
                       <span className="role-name">{a.role}</span>
                       <span className="role-detail">{a.name} · {a.dept}</span>
                     </div>
