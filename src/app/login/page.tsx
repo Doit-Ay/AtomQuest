@@ -131,6 +131,25 @@ export default function LoginPage() {
           </button>
         </div>
 
+        {/* Microsoft SSO */}
+        <button
+          className="login-microsoft-btn"
+          onClick={() => signIn("microsoft-entra-id", { callbackUrl: "/dashboard" })}
+          disabled={loading}
+        >
+          <svg width="20" height="20" viewBox="0 0 21 21">
+            <rect x="1" y="1" width="9" height="9" fill="#F25022" />
+            <rect x="11" y="1" width="9" height="9" fill="#7FBA00" />
+            <rect x="1" y="11" width="9" height="9" fill="#00A4EF" />
+            <rect x="11" y="11" width="9" height="9" fill="#FFB900" />
+          </svg>
+          Sign in with Microsoft
+        </button>
+
+        <div className="login-divider">
+          <span>or use demo accounts</span>
+        </div>
+
         <AnimatePresence mode="wait">
           {mode === "quick" ? (
             <motion.div
@@ -476,6 +495,53 @@ export default function LoginPage() {
           background: var(--bg-elevated);
           border-radius: 3px;
           color: var(--text-secondary);
+        }
+
+        .login-microsoft-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          width: 100%;
+          padding: 12px;
+          font-size: 14px;
+          font-weight: 500;
+          font-family: inherit;
+          color: var(--text-primary);
+          background: linear-gradient(135deg, rgba(0, 164, 239, 0.08), rgba(127, 186, 0, 0.08));
+          border: 1px solid rgba(0, 164, 239, 0.25);
+          border-radius: var(--radius-md);
+          cursor: pointer;
+          transition: all var(--transition-fast);
+          margin-bottom: 0;
+        }
+
+        .login-microsoft-btn:hover:not(:disabled) {
+          border-color: rgba(0, 164, 239, 0.5);
+          box-shadow: 0 4px 20px rgba(0, 164, 239, 0.15);
+          transform: translateY(-1px);
+        }
+
+        .login-microsoft-btn:disabled {
+          opacity: 0.5;
+          cursor: wait;
+        }
+
+        .login-divider {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin: 16px 0;
+          color: var(--text-tertiary);
+          font-size: 12px;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+          content: '';
+          flex: 1;
+          height: 1px;
+          background: var(--border-subtle);
         }
 
         .login-spinner {
