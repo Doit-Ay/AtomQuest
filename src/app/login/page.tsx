@@ -130,24 +130,24 @@ export default function LoginPage() {
           radial-gradient(ellipse 80% 50% at 50% -20%,rgba(124,92,252,0.15),transparent),
           radial-gradient(ellipse 60% 40% at 80% 100%,rgba(0,212,170,0.1),transparent),
           radial-gradient(ellipse 50% 50% at 10% 60%,rgba(255,181,71,0.06),transparent)}
-        .orb{position:absolute;border-radius:50%;filter:blur(80px);will-change:transform}
-        .o1{width:320px;height:320px;background:rgba(124,92,252,0.2);top:-5%;right:15%;animation:mv1 12s ease-in-out infinite}
-        .o2{width:280px;height:280px;background:rgba(0,212,170,0.18);bottom:0;left:10%;animation:mv2 14s ease-in-out infinite}
-        .o3{width:200px;height:200px;background:rgba(255,92,138,0.12);top:40%;left:60%;animation:mv1 10s ease-in-out infinite reverse}
-        .o4{width:160px;height:160px;background:rgba(255,181,71,0.1);top:20%;left:5%;animation:mv2 16s ease-in-out infinite}
-        .rays{position:absolute;inset:0;background:repeating-conic-gradient(rgba(124,92,252,0.02) 0deg,transparent 1.5deg,transparent 4deg);animation:rayrot 120s linear infinite}
-        @keyframes mv1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.1)}}
-        @keyframes mv2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-25px,35px) scale(1.08)}}
+        .orb{position:absolute;border-radius:50%;filter:blur(100px);will-change:transform}
+        .o1{width:420px;height:420px;background:rgba(124,92,252,0.25);top:-10%;right:10%;animation:mv1 12s ease-in-out infinite}
+        .o2{width:380px;height:380px;background:rgba(0,212,170,0.22);bottom:-5%;left:5%;animation:mv2 14s ease-in-out infinite}
+        .o3{width:260px;height:260px;background:rgba(255,92,138,0.15);top:35%;left:55%;animation:mv1 10s ease-in-out infinite reverse}
+        .o4{width:200px;height:200px;background:rgba(255,181,71,0.12);top:15%;left:3%;animation:mv2 16s ease-in-out infinite}
+        .rays{position:absolute;inset:0;background:repeating-conic-gradient(rgba(124,92,252,0.03) 0deg,transparent 1.5deg,transparent 4deg);animation:rayrot 120s linear infinite}
+        @keyframes mv1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.15)}}
+        @keyframes mv2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-25px,35px) scale(1.12)}}
         @keyframes rayrot{to{transform:rotate(360deg)}}
 
         /* === CARD === */
         .card{position:relative;z-index:2;width:100%;max-width:440px;padding:44px 40px 36px;
-          background:rgba(12,15,22,0.75);
-          backdrop-filter:blur(40px) saturate(1.4);
-          -webkit-backdrop-filter:blur(40px) saturate(1.4);
-          border:1px solid rgba(255,255,255,0.07);
-          border-radius:24px;
-          box-shadow:0 24px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04) inset,0 1px 0 rgba(255,255,255,0.06) inset}
+          background:rgba(10,13,20,0.88);
+          backdrop-filter:blur(60px) saturate(1.6);
+          -webkit-backdrop-filter:blur(60px) saturate(1.6);
+          border:1px solid rgba(124,92,252,0.12);
+          border-radius:28px;
+          box-shadow:0 32px 100px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.05) inset,0 1px 0 rgba(255,255,255,0.08) inset,0 0 60px rgba(124,92,252,0.04)}
 
         /* === HEADER === */
         .hdr{text-align:center;margin-bottom:32px}
@@ -182,20 +182,20 @@ export default function LoginPage() {
 
         /* === ROLE CARDS === */
         .roles{display:flex;flex-direction:column;gap:10px}
-        .role{display:flex;align-items:center;gap:14px;width:100%;padding:16px 18px;
-          background:linear-gradient(135deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01));
-          border:1px solid rgba(255,255,255,0.06);border-radius:16px;
-          cursor:pointer;font-family:inherit;text-align:left;position:relative;overflow:hidden;transition:all .2s}
-        .role:hover:not(:disabled){border-color:var(--c);
-          box-shadow:0 0 0 1px var(--c),0 8px 32px rgba(0,0,0,0.3),inset 0 0 20px color-mix(in srgb,var(--c) 6%,transparent)}
+        .role{display:flex;flex-direction:row;align-items:center;gap:14px;width:100%;padding:16px 18px;
+          background:rgba(255,255,255,0.03);
+          border:1px solid rgba(255,255,255,0.07);border-radius:16px;
+          cursor:pointer;font-family:inherit;text-align:left;position:relative;overflow:hidden;transition:all .25s}
+        .role:hover:not(:disabled){border-color:var(--c);background:rgba(255,255,255,0.05);
+          box-shadow:0 0 0 1px var(--c),0 8px 32px rgba(0,0,0,0.4),0 0 24px color-mix(in srgb,var(--c) 8%,transparent)}
         .role:disabled{opacity:.5;cursor:wait}
-        .role-pip{width:4px;height:32px;border-radius:4px;background:var(--c);opacity:.5;transition:opacity .2s;flex-shrink:0}
-        .role:hover .role-pip{opacity:1;box-shadow:0 0 8px var(--c)}
-        .role-info{flex:1;display:flex;flex-direction:column;gap:2px}
-        .role-name{font-size:15px;font-weight:700;color:#F0F2F5}
-        .role-detail{font-size:11px;color:#5C6178;font-family:'JetBrains Mono',monospace}
-        .role-go{font-size:18px;color:#3A3F52;transition:all .25s;font-weight:300}
-        .role:hover .role-go{color:var(--c);transform:translateX(4px)}
+        .role-pip{width:4px;align-self:stretch;min-height:36px;border-radius:4px;background:var(--c);opacity:.6;transition:all .25s;flex-shrink:0}
+        .role:hover .role-pip{opacity:1;box-shadow:0 0 12px var(--c);width:5px}
+        .role-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+        .role-name{font-size:15px;font-weight:700;color:#F0F2F5;line-height:1.2}
+        .role-detail{font-size:11.5px;color:#6B7080;font-family:'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .role-go{font-size:20px;color:#3A3F52;transition:all .25s;flex-shrink:0;margin-left:auto}
+        .role:hover .role-go{color:var(--c);transform:translateX(5px)}
 
         /* === FORM === */
         .form{display:flex;flex-direction:column;gap:16px}
