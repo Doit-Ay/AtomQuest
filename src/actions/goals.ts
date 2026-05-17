@@ -9,6 +9,11 @@ import {
   sendGoalApprovedEmail,
   sendGoalReturnedEmail,
 } from "@/lib/email";
+import {
+  notifyTeamsGoalSubmitted,
+  notifyTeamsGoalApproved,
+  notifyTeamsGoalReturned,
+} from "@/lib/teams";
 
 export async function getGoalSheetForUser(userId: string, cycleId?: string) {
   const cycle =
@@ -260,6 +265,15 @@ export async function submitGoalSheet(goalSheetId: string) {
       goalCount: goalSheet.goals.length,
       totalWeightage: total,
     });
+
+    // Teams notification with deep-link
+    await notifyTeamsGoalSubmitted({
+      employeeName: employee.name,
+      managerName: employee.manager.name,
+      department: employee.department,
+      goalCount: goalSheet.goals.length,
+      goalSheetId,
+    });
   }
 
   revalidatePath("/dashboard/goals");
@@ -301,6 +315,13 @@ export async function approveGoalSheet(goalSheetId: string) {
       employeeEmail: approvedSheet.user.email,
       employeeName: approvedSheet.user.name,
       managerName: session.user.name || "Manager",
+    });
+
+    // Teams notification with deep-link
+    await notifyTeamsGoalApproved({
+      employeeName: approvedSheet.user.name,
+      managerName: session.user.name || "Manager",
+      department: approvedSheet.user.department,
     });
   }
 
@@ -344,6 +365,13 @@ export async function returnGoalSheet(goalSheetId: string, note: string) {
       employeeName: returnedSheet.user.name,
       managerName: session.user.name || "Manager",
       returnNote: note,
+    });
+
+    // Teams notification with deep-link
+    await notifyTeamsGoalReturned({
+      employeeName: returnedSheet.user.name,
+      managerName: session.user.name || "Manager",
+      comment: note,
     });
   }
 

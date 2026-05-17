@@ -5,6 +5,50 @@ import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
+// Microsoft Graph API helpers for org hierarchy & role mapping
+async function fetchAzureADProfile(accessToken: string) {
+  try {
+    // Fetch user profile with manager info
+    const [profileRes, managerRes, groupsRes] = await Promise.allSettled([
+      fetch("https://graph.microsoft.com/v1.0/me?$select=displayName,mail,department,jobTitle", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }),
+      fetch("https://graph.microsoft.com/v1.0/me/manager", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }),
+      fetch("https://graph.microsoft.com/v1.0/me/memberOf?$select=displayName,id", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }),
+    ]);
+
+    const profile = profileRes.status === "fulfilled" ? await profileRes.value.json() : null;
+    const manager = managerRes.status === "fulfilled" && managerRes.value.ok
+      ? await managerRes.value.json()
+      : null;
+    const groupsData = groupsRes.status === "fulfilled" && groupsRes.value.ok
+      ? await groupsRes.value.json()
+      : null;
+
+    const groups = groupsData?.value?.map((g: any) => g.displayName?.toLowerCase()) || [];
+
+    return { profile, manager, groups };
+  } catch (error) {
+    console.error("[auth] Graph API error:", error);
+    return { profile: null, manager: null, groups: [] };
+  }
+}
+
+// Map Azure AD groups to application roles
+function mapGroupsToRole(groups: string[]): string {
+  // Configurable group-to-role mapping
+  const adminGroups = (process.env.AZURE_AD_ADMIN_GROUPS || "atmoquest-admin,hr-admin,system-admin").toLowerCase().split(",");
+  const managerGroups = (process.env.AZURE_AD_MANAGER_GROUPS || "atmoquest-manager,team-leads,managers").toLowerCase().split(",");
+
+  if (groups.some(g => adminGroups.some(ag => g.includes(ag.trim())))) return "ADMIN";
+  if (groups.some(g => managerGroups.some(mg => g.includes(mg.trim())))) return "MANAGER";
+  return "EMPLOYEE";
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     // Microsoft Entra ID (Azure AD) SSO
@@ -16,7 +60,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             tenantId: process.env.AZURE_AD_TENANT_ID!,
             authorization: {
               params: {
-                scope: "openid profile email User.Read",
+                scope: "openid profile email User.Read User.ReadBasic.All",
               },
             },
           }),
@@ -63,28 +107,70 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account }) {
-      // Auto-provision users from Microsoft Entra ID
+      // Auto-provision & sync users from Microsoft Entra ID
       if (account?.provider === "microsoft-entra-id" && user.email) {
         try {
+          // Fetch org hierarchy & groups from Microsoft Graph
+          const { profile, manager, groups } = await fetchAzureADProfile(
+            account.access_token || ""
+          );
+
+          // Determine role from Azure AD group membership
+          const mappedRole = mapGroupsToRole(groups);
+          const department = profile?.department || "General";
+
+          // Find or auto-link manager via Azure AD reporting line
+          let managerId: string | null = null;
+          if (manager?.mail) {
+            const managerUser = await prisma.user.findUnique({
+              where: { email: manager.mail },
+            });
+            if (managerUser) {
+              managerId = managerUser.id;
+            }
+          }
+
           const existingUser = await prisma.user.findUnique({
             where: { email: user.email },
           });
 
           if (!existingUser) {
-            // Auto-create user from Azure AD
+            // Auto-create user from Azure AD with org hierarchy
             await prisma.user.create({
               data: {
                 email: user.email,
-                name: user.name || user.email.split("@")[0],
+                name: profile?.displayName || user.name || user.email.split("@")[0],
                 password: await bcrypt.hash(crypto.randomUUID(), 10),
-                role: "EMPLOYEE", // Default role — Admin can change later
-                department: "General",
+                role: mappedRole,
+                department,
+                managerId,
               },
             });
-            console.log("[auth] Auto-provisioned Azure AD user:", user.email);
+            console.log(`[auth] Provisioned Azure AD user: ${user.email} | Role: ${mappedRole} | Manager: ${manager?.mail || "none"}`);
+          } else {
+            // Sync org hierarchy on every login (keeps reporting lines up-to-date)
+            const updateData: any = {};
+            if (profile?.department && profile.department !== existingUser.department) {
+              updateData.department = profile.department;
+            }
+            if (managerId && managerId !== existingUser.managerId) {
+              updateData.managerId = managerId;
+            }
+            // Only update role from groups if not manually overridden by admin
+            if (groups.length > 0 && mappedRole !== existingUser.role) {
+              updateData.role = mappedRole;
+            }
+
+            if (Object.keys(updateData).length > 0) {
+              await prisma.user.update({
+                where: { email: user.email },
+                data: updateData,
+              });
+              console.log(`[auth] Synced Azure AD profile for ${user.email}:`, updateData);
+            }
           }
         } catch (error) {
-          console.error("[auth] Azure AD user provisioning error:", error);
+          console.error("[auth] Azure AD sync error:", error);
         }
       }
       return true;

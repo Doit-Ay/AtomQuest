@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { sendSharedGoalEmail } from "@/lib/email";
+import { notifyTeamsSharedGoal } from "@/lib/teams";
 
 export async function createSharedGoal(data: {
   thrustArea: string;
@@ -106,6 +107,14 @@ export async function createSharedGoal(data: {
         recipients: data.recipientIds,
       }),
     },
+  });
+
+  // Teams notification with deep-link
+  await notifyTeamsSharedGoal({
+    goalTitle: data.title,
+    assignedBy: session.user.name || "Admin",
+    recipientCount: data.recipientIds.length,
+    thrustArea: data.thrustArea,
   });
 
   revalidatePath("/dashboard/goals");
