@@ -87,9 +87,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={S.page}>
+    <div style={S.page} className="lp-page">
       {/* ═══ LEFT HERO ═══ */}
-      <div style={S.hero}>
+      <div style={S.hero} className="lp-hero">
         <div style={S.heroBg}>
           <div style={S.heroGrad} />
           <div style={{ position: "absolute", inset: 0 }}>
@@ -100,10 +100,10 @@ export default function LoginPage() {
           <div style={S.heroGrid} />
         </div>
 
-        <motion.div style={S.heroContent} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
-          <div style={S.heroBadge}>🚀 AtomQuest Hackathon 1.0</div>
+        <motion.div style={S.heroContent} className="lp-hero-content" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
+          <div style={S.heroBadge} className="lp-badge">🚀 AtomQuest Hackathon 1.0</div>
 
-          <h1 style={S.heroTitle}>
+          <h1 style={S.heroTitle} className="lp-title">
             Track Goals.<br />
             <span style={S.heroTitleSpan}>Drive Results.</span>
           </h1>
@@ -112,7 +112,7 @@ export default function LoginPage() {
             Enterprise performance management with OKR tracking, automated approvals, and real-time analytics.
           </p>
 
-          <div style={S.heroFeatures}>
+          <div style={S.heroFeatures} className="lp-features">
             {[
               { c: "#00D4AA", t: "Microsoft SSO & Org Sync" },
               { c: "#7C5CFC", t: "Teams Notifications" },
@@ -126,7 +126,7 @@ export default function LoginPage() {
             ))}
           </div>
 
-          <div style={S.heroStats}>
+          <div style={S.heroStats} className="lp-stats">
             {[
               { n: "16", l: "Pages" },
               { n: "3", l: "Roles" },
@@ -143,7 +143,7 @@ export default function LoginPage() {
       </div>
 
       {/* ═══ RIGHT LOGIN ═══ */}
-      <div style={S.login}>
+      <div style={S.login} className="lp-login">
         <motion.div style={S.loginInner} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
           <div style={S.loginLogo}>
             <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
@@ -210,7 +210,27 @@ export default function LoginPage() {
         <div style={S.loginFoot}>Built with Next.js 16 · Prisma · Azure AD</div>
       </div>
 
-      <style>{`@keyframes sp { to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes sp { to { transform: rotate(360deg); } }
+
+        @media (max-width: 900px) {
+          .lp-page { flex-direction: column !important; }
+          .lp-hero { flex: none !important; min-height: auto !important; padding: 40px 28px 36px !important; }
+          .lp-hero-content { max-width: 100% !important; }
+          .lp-badge { font-size: 12px !important; margin-bottom: 20px !important; }
+          .lp-title { font-size: 32px !important; margin-bottom: 14px !important; }
+          .lp-features { margin-bottom: 28px !important; gap: 10px !important; }
+          .lp-stats { gap: 20px !important; flex-wrap: wrap !important; }
+          .lp-login { width: 100% !important; padding: 32px 28px !important; border-left: none !important; border-top: 1px solid rgba(255,255,255,0.04) !important; }
+        }
+
+        @media (max-width: 480px) {
+          .lp-hero { padding: 28px 20px 24px !important; }
+          .lp-title { font-size: 26px !important; }
+          .lp-stats { gap: 16px !important; }
+          .lp-login { padding: 24px 20px !important; }
+        }
+      `}</style>
     </div>
   );
 }
