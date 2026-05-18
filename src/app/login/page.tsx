@@ -55,7 +55,7 @@ export default function LoginPage() {
           <p className="lp-hero-sub">
             Track goals, drive results, and build a culture of continuous growth with AtmoQuest.
           </p>
-          <div className="lp-hero-badge">🚀 AtomQuest Hackathon 1.0 · Unstop</div>
+
         </motion.div>
       </div>
 
