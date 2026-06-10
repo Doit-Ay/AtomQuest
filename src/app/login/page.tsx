@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ACCOUNTS = [
-  { role: "Employee", email: "employee@atmoquest.dev", name: "Aditya Singh", dept: "Engineering", color: "#4F6EF7", initials: "AS" },
-  { role: "Manager", email: "manager@atmoquest.dev", name: "Rajesh Kumar", dept: "Engineering", color: "#7C5CFC", initials: "RK" },
-  { role: "Admin", email: "admin@atmoquest.dev", name: "Priya Sharma", dept: "Human Resources", color: "#00C9A7", initials: "PS" },
+  { role: "Employee", email: "employee@atomquest.dev", name: "Aditya Singh", dept: "Engineering", color: "#4F6EF7", initials: "AS" },
+  { role: "Manager", email: "manager@atomquest.dev", name: "Rajesh Kumar", dept: "Engineering", color: "#7C5CFC", initials: "RK" },
+  { role: "Admin", email: "admin@atomquest.dev", name: "Priya Sharma", dept: "Human Resources", color: "#00C9A7", initials: "PS" },
 ];
 
 export default function LoginPage() {
@@ -53,7 +53,7 @@ export default function LoginPage() {
             Performance<br />starts here
           </h1>
           <p className="lp-hero-sub">
-            Track goals, drive results, and build a culture of continuous growth with AtmoQuest.
+            Track goals, drive results, and build a culture of continuous growth with AtomQuest.
           </p>
 
         </motion.div>
@@ -78,7 +78,7 @@ export default function LoginPage() {
           </div>
 
           <h2 className="lp-welcome">Hello! Welcome back</h2>
-          <p className="lp-welcome-sub">Sign in to access your AtmoQuest dashboard</p>
+          <p className="lp-welcome-sub">Sign in to access your AtomQuest dashboard</p>
 
           {/* Microsoft SSO */}
           <motion.button className="lp-ms-btn" onClick={() => signIn("microsoft-entra-id", { callbackUrl: "/dashboard" })} disabled={loading} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>

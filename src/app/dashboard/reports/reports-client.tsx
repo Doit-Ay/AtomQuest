@@ -48,7 +48,7 @@ export function ReportsClient({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `AtmoQuest_Report_${cycleName.replace(/\s/g, "_")}.csv`;
+    a.download = `AtomQuest_Report_${cycleName.replace(/\s/g, "_")}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };

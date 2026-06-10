@@ -2,7 +2,7 @@
 
 > **AtomQuest Hackathon 1.0** | Comprehensive Performance Management System
 
-AtmoQuest is an enterprise-grade, goal-setting and performance-tracking platform built for organizations following structured appraisal cycles. It digitizes the entire lifecycle — from goal definition and manager approval to quarterly check-ins, weighted scoring, analytics, and automated notifications.
+AtomQuest is an enterprise-grade, goal-setting and performance-tracking platform built for organizations following structured appraisal cycles. It digitizes the entire lifecycle — from goal definition and manager approval to quarterly check-ins, weighted scoring, analytics, and automated notifications.
 
 ---
 
@@ -14,9 +14,9 @@ AtmoQuest is an enterprise-grade, goal-setting and performance-tracking platform
 
 | Role     | User          | Email                        |
 |----------|---------------|------------------------------|
-| Employee | Aditya Singh  | employee@atmoquest.dev       |
-| Manager  | Rajesh Kumar  | manager@atmoquest.dev        |
-| Admin    | Priya Sharma  | admin@atmoquest.dev          |
+| Employee | Aditya Singh  | employee@atomquest.dev       |
+| Manager  | Rajesh Kumar  | manager@atomquest.dev        |
+| Admin    | Priya Sharma  | admin@atomquest.dev          |
 
 ### Microsoft SSO
 Click **"Sign in with Microsoft"** to login via Azure AD — auto-provisions new users with org hierarchy sync.
@@ -126,7 +126,7 @@ User → Login Page
 Goal Event (submit/approve/return)
   ├── Email (Resend API) → Employee/Manager inbox
   └── Teams (Webhook) → Adaptive Card → Channel notification
-                              └── Deep-link → AtmoQuest page
+                              └── Deep-link → AtomQuest page
 ```
 
 ---
@@ -215,8 +215,8 @@ NEXTAUTH_URL="http://localhost:3000"
 AZURE_AD_CLIENT_ID=""
 AZURE_AD_CLIENT_SECRET=""
 AZURE_AD_TENANT_ID="common"
-AZURE_AD_ADMIN_GROUPS="atmoquest-admin"  # Azure AD groups → Admin role
-AZURE_AD_MANAGER_GROUPS="atmoquest-manager"  # Azure AD groups → Manager role
+AZURE_AD_ADMIN_GROUPS="atomquest-admin"  # Azure AD groups → Admin role
+AZURE_AD_MANAGER_GROUPS="atomquest-manager"  # Azure AD groups → Manager role
 
 # Microsoft Teams (Optional)
 TEAMS_WEBHOOK_URL=""                     # Incoming Webhook URL

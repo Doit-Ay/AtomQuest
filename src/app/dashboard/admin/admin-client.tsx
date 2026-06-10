@@ -286,7 +286,7 @@ export function AdminClient({
                   <label className="label">Email</label>
                   <input
                     className="input"
-                    placeholder="user@atmoquest.dev"
+                    placeholder="user@atomquest.dev"
                     value={userForm.email}
                     onChange={(e) => setUserForm({ ...userForm, email: e.target.value })}
                   />

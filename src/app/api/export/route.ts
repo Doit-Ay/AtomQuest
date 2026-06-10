@@ -74,7 +74,7 @@ export async function GET(request: Request) {
     return new NextResponse(csvRows.join("\n"), {
       headers: {
         "Content-Type": "text/csv",
-        "Content-Disposition": `attachment; filename=AtmoQuest_${cycle.name.replace(/\s/g, "_")}.csv`,
+        "Content-Disposition": `attachment; filename=AtomQuest_${cycle.name.replace(/\s/g, "_")}.csv`,
       },
     });
   }
@@ -128,7 +128,7 @@ export async function GET(request: Request) {
   return new NextResponse(buffer, {
     headers: {
       "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "Content-Disposition": `attachment; filename=AtmoQuest_${cycle.name.replace(/\s/g, "_")}.xlsx`,
+      "Content-Disposition": `attachment; filename=AtomQuest_${cycle.name.replace(/\s/g, "_")}.xlsx`,
     },
   });
 }

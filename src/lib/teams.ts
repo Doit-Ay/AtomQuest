@@ -60,7 +60,7 @@ async function sendTeamsCard(notification: TeamsNotification) {
                       items: [
                         {
                           type: "TextBlock",
-                          text: "AtmoQuest",
+                          text: "AtomQuest",
                           weight: "Bolder",
                           size: "Small",
                           color: "Accent",
@@ -99,7 +99,7 @@ async function sendTeamsCard(notification: TeamsNotification) {
             ? [
                 {
                   type: "Action.OpenUrl",
-                  title: notification.actionText || "View in AtmoQuest",
+                  title: notification.actionText || "View in AtomQuest",
                   url: notification.actionUrl,
                   style: "positive",
                 },

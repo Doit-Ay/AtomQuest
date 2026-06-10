@@ -41,8 +41,8 @@ async function fetchAzureADProfile(accessToken: string) {
 // Map Azure AD groups to application roles
 function mapGroupsToRole(groups: string[]): string {
   // Configurable group-to-role mapping
-  const adminGroups = (process.env.AZURE_AD_ADMIN_GROUPS || "atmoquest-admin,hr-admin,system-admin").toLowerCase().split(",");
-  const managerGroups = (process.env.AZURE_AD_MANAGER_GROUPS || "atmoquest-manager,team-leads,managers").toLowerCase().split(",");
+  const adminGroups = (process.env.AZURE_AD_ADMIN_GROUPS || "atomquest-admin,hr-admin,system-admin").toLowerCase().split(",");
+  const managerGroups = (process.env.AZURE_AD_MANAGER_GROUPS || "atomquest-manager,team-leads,managers").toLowerCase().split(",");
 
   if (groups.some(g => adminGroups.some(ag => g.includes(ag.trim())))) return "ADMIN";
   if (groups.some(g => managerGroups.some(mg => g.includes(mg.trim())))) return "MANAGER";

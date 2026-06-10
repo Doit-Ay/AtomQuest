@@ -5,7 +5,7 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const FROM_EMAIL = "AtmoQuest <onboarding@resend.dev>";
+const FROM_EMAIL = "AtomQuest <onboarding@resend.dev>";
 
 interface EmailOptions {
   to: string;
@@ -63,7 +63,7 @@ function emailTemplate(title: string, body: string): string {
   <body>
     <div class="container">
       <div class="card">
-        <div class="logo">◈ AtmoQuest</div>
+        <div class="logo">◈ AtomQuest</div>
         <div class="subtitle">Goal Setting & Tracking Portal</div>
         ${body}
       </div>
@@ -95,7 +95,7 @@ export async function sendGoalSubmittedEmail(data: {
   `;
   return sendEmail({
     to: data.managerEmail,
-    subject: `[AtmoQuest] ${data.employeeName} submitted goals for review`,
+    subject: `[AtomQuest] ${data.employeeName} submitted goals for review`,
     html: emailTemplate("Goal Submitted", body),
   });
 }
@@ -115,7 +115,7 @@ export async function sendGoalApprovedEmail(data: {
   `;
   return sendEmail({
     to: data.employeeEmail,
-    subject: "[AtmoQuest] Your goal sheet has been approved!",
+    subject: "[AtomQuest] Your goal sheet has been approved!",
     html: emailTemplate("Goal Approved", body),
   });
 }
@@ -140,7 +140,7 @@ export async function sendGoalReturnedEmail(data: {
   `;
   return sendEmail({
     to: data.employeeEmail,
-    subject: "[AtmoQuest] Action Required: Goal sheet returned",
+    subject: "[AtomQuest] Action Required: Goal sheet returned",
     html: emailTemplate("Goal Returned", body),
   });
 }
@@ -161,7 +161,7 @@ export async function sendCheckInReminderEmail(data: {
   `;
   return sendEmail({
     to: data.employeeEmail,
-    subject: `[AtmoQuest] ${data.quarter} Check-in Reminder — ${data.cycleName}`,
+    subject: `[AtomQuest] ${data.quarter} Check-in Reminder — ${data.cycleName}`,
     html: emailTemplate("Check-in Reminder", body),
   });
 }
@@ -187,7 +187,7 @@ export async function sendSharedGoalEmail(data: {
   `;
   return sendEmail({
     to: data.employeeEmail,
-    subject: `[AtmoQuest] Shared goal: ${data.goalTitle}`,
+    subject: `[AtomQuest] Shared goal: ${data.goalTitle}`,
     html: emailTemplate("Shared Goal", body),
   });
 }
