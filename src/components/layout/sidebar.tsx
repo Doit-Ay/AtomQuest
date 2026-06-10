@@ -88,7 +88,7 @@ export function Sidebar({ role, name, email }: SidebarProps) {
             letterSpacing: "-0.03em",
           }}
         >
-          AtmoQuest
+          AtomQuest
         </span>
       </div>
 
