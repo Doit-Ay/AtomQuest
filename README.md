@@ -1,4 +1,4 @@
-# 🎯 AtmoQuest — Goal Setting & Tracking Portal
+# 🎯 AtomQuest — Goal Setting & Tracking Portal
 
 > **AtomQuest Hackathon 1.0** | Comprehensive Performance Management System
 
